@@ -28,23 +28,20 @@ def chronal_calibration_repetition():
     inputs = get_inputs()
     out = 0
     sum = 0
+    
+    #collection of sums already visited
     sum_collection = [sum]
     
     run = True
     while(run):
         for x in inputs:
-            #print("current: " + str(sum) + " + " +  str(x) + " = " + str(sum + x))
             sum = sum + x
             if sum in sum_collection and run:
                 out = sum
                 run = False
                 break
             else:
-                #print("adding: " + str(sum) + " to array")
                 sum_collection.append(sum)
-                #print("\n Array: \n")
-                #for y in sum_collection:
-                #    print(str(y))
     return out
     
 

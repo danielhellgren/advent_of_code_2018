@@ -1,5 +1,14 @@
 import unittest
+#import ../solution
+
+#importing from parent dir in python........
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
+
 import solution
+
 from cart import Cart
 
 class SolutionTest(unittest.TestCase):

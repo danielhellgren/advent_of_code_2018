@@ -1,9 +1,9 @@
 from cart import Cart
 
-def getInputs():
+def getInputs(filename = "input.txt"):
 
     #open file
-    puzzle_input_file = open("input.txt", "r")
+    puzzle_input_file = open(filename, "r")
     inputs = []
 
     #load each line into array
@@ -12,6 +12,7 @@ def getInputs():
         inputs.append(str(line))
 
     #close file, not neccesary when read only
+    puzzle_input_file.close()
     return inputs
 
 #converts a line into an array
@@ -61,13 +62,14 @@ def loadTrackMatrix(input_lines, carts):
 
     return track_matrix
     
-def init():
 
-    raw_lines = getInputs()
+def init(filename = "input.txt"):
+
+    raw_lines = getInputs(filename)
     carts = []
     track_matrix = loadTrackMatrix(raw_lines, carts)
     print("Loaded: " + str(len(carts)) + " carts")
-    print((track_matrix[95])[33])
+    #print((track_matrix[95])[33])
     return track_matrix, carts
 
 #check if any two carts are on the same location = crash

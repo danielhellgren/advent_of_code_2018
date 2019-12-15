@@ -33,6 +33,51 @@ class RulesTest(unittest.TestCase):
         #amount of carts loaded
         self.assertEqual(len(carts), 1)
 
+    def sort_set_carts(self, cart1, cart2, cart3):
+        return [[cart3, cart2, cart1],
+                    [cart3, cart1, cart2],
+                    [cart2, cart3, cart1],
+                    [cart2, cart1, cart3],
+                    [cart1, cart3, cart2],
+                    [cart1, cart2, cart3]]
+
+
+    def test_sort(self):
+        cart1 = Cart((0, 1), Cart.CART_DIR_DOWN)
+        cart2 = Cart((0, 2), Cart.CART_DIR_DOWN)
+        cart3 = Cart((0, 3), Cart.CART_DIR_DOWN)
+
+        carts1 = self.sort_set_carts(cart1, cart2, cart3)
+        carts1_sorted = [cart1, cart2, cart3]
+
+        for carts in carts1:
+            solution.sortCarts(carts)
+            self.assertEqual(carts, carts1_sorted)
+
+        ##########
+        cart1 = Cart((3, 1), Cart.CART_DIR_DOWN)
+        cart2 = Cart((2, 2), Cart.CART_DIR_DOWN)
+        cart3 = Cart((1, 3), Cart.CART_DIR_DOWN)
+
+        carts2 = self.sort_set_carts(cart1, cart2, cart3)
+        carts2_sorted = [cart1, cart2, cart3]
+
+        for carts in carts2:
+            solution.sortCarts(carts)
+            self.assertEqual(carts, carts2_sorted)
+
+        ##########
+        cart1 = Cart((1, 1), Cart.CART_DIR_DOWN)
+        cart2 = Cart((2, 1), Cart.CART_DIR_DOWN)
+        cart3 = Cart((3, 1), Cart.CART_DIR_DOWN)
+
+        carts3 = self.sort_set_carts(cart1, cart2, cart3)
+        carts3_sorted = [cart1, cart2, cart3]
+
+        for carts in carts3:
+            solution.sortCarts(carts)
+            self.assertEqual(carts, carts3_sorted)
+
     def test_turn(self):
 
         tracks, carts = self.init("./test/test_turn_input.txt")
@@ -110,9 +155,6 @@ class RulesTest(unittest.TestCase):
             self.tick(tracks, carts, 1)
 
             
-
-
-
     def test_intersection(self):
 
         tracks, carts = self.init("./test/test_intersection_input.txt")
@@ -147,6 +189,17 @@ class RulesTest(unittest.TestCase):
             
 
             self.tick(tracks, carts, 1)
+
+    def test_collision(self):
+
+        tracks, carts = self.init("./test/test_collision1_input.txt")
+        _, col_pos = solution.getCollisionPosition(tracks, carts)
+        self.assertEqual(col_pos, (0,3))
+
+        tracks, carts = self.init("./test/test_collision2_input.txt")
+        _, col_pos = solution.getCollisionPosition(tracks, carts)
+        self.assertEqual(col_pos, (2,1))
+
 
 
 if __name__ == '__main__':

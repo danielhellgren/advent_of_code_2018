@@ -85,11 +85,19 @@ def checkCollision(carts):
 
     return False, (0, 0)
 
-def moveCarts(track_matrix, carts):
+def moveCarts(track_matrix, carts, col_detection = False):
     col_pos = (0,0)
-    collision = True
+    collision = False
     for cart in carts:
         cart.move(track_matrix)
+        if col_detection:
+            collision, col_pos = checkCollision(carts)
+        if col_detection and collision:
+            return True, col_pos
+    
+    return False, (0,0)
+
+
 
 def sortCarts(carts):
 
@@ -99,24 +107,33 @@ def sortCarts(carts):
 
         for j in range(n-i-1):
 
-            if (carts[j]).getPosY() < (carts[j+1]).getPosY():
+            #if cur pos > next pos swap places
+            if (carts[j]).getPosY() > (carts[j+1]).getPosY():
                 carts[j], carts[j+1] = carts[j+1], carts[j]
+            if ((carts[j]).getPosY() == (carts[j+1]).getPosY()) and (carts[j]).getPosX() > (carts[j+1]).getPosX():
+                    carts[j], carts[j+1] = carts[j+1], carts[j]
 
+
+def getCollisionPosition(tracks, carts):
+    cart_collision = False
+    col_pos = (0,0)
+    
+    while(not cart_collision):
+        sortCarts(carts)
+        cart_collision, col_pos = moveCarts(tracks, carts, True)
+        #cart_collision, col_pos = checkCollision(carts)
+        #sort because top row carts move before others
+        #I only change coords of carts and dont move them in an 2 array
+
+    return cart_collision, col_pos
 
 if __name__ == '__main__':
 
     track_matrix, carts = init()
-    cart_collision = False
-    #sort because top row carts move before others
-    #I only change coords of carts and dont move them in an 2 array
+    
+    
     sortCarts(carts)
-
-    while(not cart_collision):
-
-       moveCarts(track_matrix, carts)
-       cart_collision, col_pos = checkCollision(carts)
-       #sort because top row carts move before others
-       #I only change coords of carts and dont move them in an 2 array
-       sortCarts(carts)
+    
+    cart_collision, col_pos = getCollisionPosition(track_matrix, carts)
 
     print("Crash at: (" + str(col_pos[0]) + ", " + str(col_pos[1]) + ")")

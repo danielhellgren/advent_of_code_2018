@@ -69,7 +69,7 @@ def init(filename = "input.txt"):
     carts = []
     track_matrix = loadTrackMatrix(raw_lines, carts)
     print("Loaded: " + str(len(carts)) + " carts")
-    #print((track_matrix[95])[33])
+    
     return track_matrix, carts
 
 #check if any two carts are on the same location = crash
@@ -97,8 +97,6 @@ def moveCarts(track_matrix, carts, col_detection = False):
     
     return False, (0,0)
 
-
-
 def sortCarts(carts):
 
     #bubble sort slow but the one i can remember atm
@@ -121,19 +119,13 @@ def getCollisionPosition(tracks, carts):
     while(not cart_collision):
         sortCarts(carts)
         cart_collision, col_pos = moveCarts(tracks, carts, True)
-        #cart_collision, col_pos = checkCollision(carts)
-        #sort because top row carts move before others
-        #I only change coords of carts and dont move them in an 2 array
 
     return cart_collision, col_pos
 
 if __name__ == '__main__':
 
     track_matrix, carts = init()
-    
-    
     sortCarts(carts)
-    
     cart_collision, col_pos = getCollisionPosition(track_matrix, carts)
 
     print("Crash at: (" + str(col_pos[0]) + ", " + str(col_pos[1]) + ")")
